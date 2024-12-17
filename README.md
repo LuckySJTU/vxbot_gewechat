@@ -1,4 +1,4 @@
-# Gewechat Bot
+# Gewechat Wechat Bot
 
 ## 简介
 
