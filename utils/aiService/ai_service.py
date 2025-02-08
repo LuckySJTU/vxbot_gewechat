@@ -199,7 +199,7 @@ class AIService:
             return data["choices"][0]["message"]["content"].strip()
     async def _call_deepseek_api(self, text: str, api_key: str, model_id: str) -> str:
         """调用Deepseek API"""
-        client = OpenAI(api_key="sk-6c4eaae123d74b2e85ef25de7570fba0", base_url="https://api.deepseek.com")
+        client = OpenAI(api_key="", base_url="https://api.deepseek.com")
         response = client.chat.completions.create(
             model="deepseek-chat",
             messages=[
