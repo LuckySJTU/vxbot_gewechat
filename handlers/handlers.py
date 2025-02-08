@@ -22,6 +22,12 @@ class MessageContext:
         self.content = self.data.get('Content', {}).get('string')
         self.create_time = self.data.get('CreateTime')
 
+        # 自定义字段
+        self.is_group = '@chatroom' in self.from_user
+        self.is_at = '在群聊中@了你' in self.data.get('PushContent') and self.is_group and '@' in self.content
+        self.is_for_bot = self.is_at or not self.is_group
+        self.msg = ' '.join(self.content.split(' ')[1:]) if self.is_group else self.content
+
         # 图片消息特有字段
         self.img_buf = self.data.get('ImgBuf', {}).get('buffer')
 

@@ -39,7 +39,7 @@ class MessageSender:
                     if response.status == 200:
                         result = await response.json()
                         if result.get("ret") == 200:
-                            self.logger.info(f"文本消息发送成功 - 接收者: {to_wxid}")
+                            self.logger.info(f"文本消息发送成功 - 接收者: {to_wxid} - 内容：{content}")
                             return True
                         self.logger.error(f"发送文本消息失败: {result.get('msg', '未知错误')}")
                     else:

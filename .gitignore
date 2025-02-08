@@ -6,3 +6,4 @@
 /logs/wechat_2024-12-09.log
 /logs/wechat_2024-12-10.log
 *.pyc
+/logs/*
