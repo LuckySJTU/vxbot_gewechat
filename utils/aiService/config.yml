@@ -1,6 +1,6 @@
 ai_service:
-  proxy_host: "http://xxx"
-  default_provider: "openai"  # 默认使用的AI提供商
+  proxy_host: ""
+  default_provider: "deepseek"  # 默认使用的AI提供商
   providers:
     claude:
       models:
@@ -40,3 +40,15 @@ ai_service:
           - "xxx"
         exhausted: []
       default_model: "GPT-4o-mini"
+    
+    deepseek:
+      models:
+        deepseek-chat:
+          model_id: 'deepseek-chat'
+          input_cost: 1.0
+          output_cost: 1.0
+      api_keys:
+        active:
+          - ""
+        exhausted: []
+      default_model: "deepseek-chat"

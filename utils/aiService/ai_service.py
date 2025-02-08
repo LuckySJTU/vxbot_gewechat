@@ -4,6 +4,7 @@ from pathlib import Path
 import logging
 import random
 from typing import Dict, Tuple, Optional
+from openai import OpenAI
 
 
 class KeyManager:
@@ -140,6 +141,8 @@ class AIService:
                     response = await self._call_claude_api(text, key, provider_config, model_id)
                 elif provider == 'openai':
                     response = await self._call_openai_api(text, key, model_id)
+                elif provider == 'deepseek':
+                    response = await self._call_deepseek_api(text, key, model_id)
                 else:
                     raise ValueError(f"未实现的AI提供商: {provider}")
                 return response
@@ -194,3 +197,17 @@ class AIService:
             response.raise_for_status()
             data = response.json()
             return data["choices"][0]["message"]["content"].strip()
+    async def _call_deepseek_api(self, text: str, api_key: str, model_id: str) -> str:
+        """调用Deepseek API"""
+        client = OpenAI(api_key="sk-6c4eaae123d74b2e85ef25de7570fba0", base_url="https://api.deepseek.com")
+        response = client.chat.completions.create(
+            model="deepseek-chat",
+            messages=[
+                {"role": "system", "content": "你是一个人工智能助手，请用尽量简洁明了准确的语言进行回复。"},
+                {"role": "user", "content": text},
+            ],
+            stream=False
+        )
+
+        return response.choices[0].message.content
+

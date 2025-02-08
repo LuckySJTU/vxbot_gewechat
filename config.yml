@@ -1,6 +1,6 @@
 alerts:
   email:
-    enabled: true
+    enabled: false
     recipient_email: xxx@qq.com
     sender_email: xxx@qq.com
     sender_password: xxx
@@ -9,11 +9,11 @@ alerts:
   telegram:
     bot_token: xxx
     chat_id: xxx
-    enabled: true
+    enabled: false
 monitoring:
-  check_interval: 30
+  check_interval: 14400
 wechat:
-  app_id:
+  app_id: wx_jnCwfIHk_LcmYuy3czyIU
   base_url: http://localhost:2531/v2/api
-  callback_url: http://192.168.1.2:8069/callback
-  token:
+  callback_url: http://192.168.3.233:8069/callback
+  token: 1b5ea40ebc8e44ca927de8574b46d3ab

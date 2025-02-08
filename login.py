@@ -267,6 +267,9 @@ def main():
 
     # 检查在线状态
     if login.check_online_status():
+        if not login.set_callback():
+            login.logger.error("=== 程序结束：设置回调失败 ===")
+            return
         login.logger.info("账号在线，开始监控状态...")
         login.monitor_status()
         return

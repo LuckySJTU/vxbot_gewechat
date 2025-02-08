@@ -16,7 +16,9 @@ class AIChatHandler(MessageHandler):
 
     async def can_handle(self, context: MessageContext) -> bool:
         """判断是否为文本消息"""
-        return context.msg_type == 1
+        self.logger.info(context.raw_message)
+        return False
+        # return context.msg_type == 1
 
     async def handle(self, context: MessageContext) -> bool:
         """处理消息"""
@@ -24,7 +26,7 @@ class AIChatHandler(MessageHandler):
             # 发送处理中的提示
 
             # 调用AI服务获取回复
-            response = await self.ai_service.get_ai_response(context.content,provider="openai",model="GPT-4o-mini")
+            response = await self.ai_service.get_ai_response(context.content,provider="deepseek",model="deepseek-chat")
 
             # 发送AI回复
             success = await self.message_sender.send_text(
