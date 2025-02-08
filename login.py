@@ -259,6 +259,27 @@ class WeChatLogin:
             self.logger.info(f"状态检查正常，等待{check_interval}秒后重新检查...")
             time.sleep(check_interval)
 
+    def getChatroomInfo(self, appid, chatroomid):
+        url = f"{self.base_url}/group/getChatroomInfo"
+        callback_data = {
+            "appId": appid,
+            "chatroomId": chatroomid,
+        }
+        try:
+            response = requests.post(url, headers=self.headers, json=callback_data)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('ret') == 200:
+                    return data.get('data',{}).get("memberList",[])
+                else:
+                    self.logger.error(f"获取群信息错误，{response.status_code}")
+            else:
+                self.logger.error(f"获取群信息失败，{response.status_code}")
+        except Exception as e:
+            self.logger.error(f"获取群信息出错，{e}")
+        return False
+
+
 
 def main():
     """主函数：程序入口"""

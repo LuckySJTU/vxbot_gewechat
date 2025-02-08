@@ -7,3 +7,4 @@
 /logs/wechat_2024-12-10.log
 *.pyc
 /logs/*
+chat_history.db
