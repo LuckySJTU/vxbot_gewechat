@@ -76,17 +76,43 @@ class AIChatHandler(MessageHandler):
             response = requests.post(DEEPSEEK_API_URL, headers=headers, json=data, timeout=30)
             response.raise_for_status()
             reply = response.json()['choices'][0]['message']['content']
-            
             # 添加回复到上下文
             chat_contexts[user_wxid].append({"role": "assistant", "content": reply})
             
+        except Exception as e:
+            self.logger.error(f"Deepseek回复出错，尝试使用智谱清言回复。{e}")
+        
+            try:
+                headers = {
+                    "Authorization": f"Bearer {ZHIPU_API_KEY}",
+                    "Content-Type": "application/json"
+                }
+                data = {
+                    "model": "glm-4-flashx",
+                    "messages": [
+                        {"role": "system", "content": "你是一个人工智能聊天助手，请尽量简洁明了准确地回答问题。"},
+                        *chat_contexts[user_wxid]
+                    ]
+                }
+                response = requests.post(ZHIPU_API_URL, headers=headers, json=data, timeout=30)
+                response.raise_for_status()
+                reply = response.json()['choices'][0]['message']['content']
+                # 添加回复到上下文
+                chat_contexts[user_wxid].append({"role": "assistant", "content": reply})
+                reply = '【Deepseek无响应，使用智谱清言回复。】' + reply
+            
+            except Exception as e:
+                self.logger.error(f"智谱清言回复失败，返回无法处理。{e}")
+                reply = '获取AI回复时出错，请稍后再试。'
+
+        # 尝试发送
+        try:
             # 发送回复
             success = await self.message_sender.send_text(
                 context.app_id,
                 context.from_user,
                 reply,
             )
-
             if success:
                 self.logger.info(f"已发送AI回复给用户 {context.from_user}")
                 return True
