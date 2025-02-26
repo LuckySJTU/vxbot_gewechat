@@ -8,3 +8,4 @@
 *.pyc
 /logs/*
 chat_history.db
+save_history.py

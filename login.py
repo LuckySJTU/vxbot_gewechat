@@ -98,8 +98,16 @@ class WeChatLogin:
                 if data.get("ret") == 200:
                     is_online = data.get("data", False)
                     if is_online:
-                        self.logger.info("账号在线")
-                        return True
+                        # check contacts list
+                        url = f"{self.base_url}/contacts/fetchContactsList"
+                        response = requests.post(url, headers=self.headers, json=check_data)
+                        if response.status_code == 200:
+                            data = response.json()
+                            if data.get('ret') == 200:
+                                self.logger.info("账号在线")
+                                friends = data.get('data',{}).get("friends")
+                                self.logger.info(f"当前好友列表共{len(friends)}人。")
+                                return True
                     self.logger.info("账号离线")
                 else:
                     self.logger.warning(f"检查在线状态失败: {data.get('msg', '未知错误')}")
